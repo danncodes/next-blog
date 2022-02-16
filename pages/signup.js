@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { getSession, signIn } from "next-auth/react"
 
 export default function Signup() {
 
@@ -78,4 +79,12 @@ export default function Signup() {
       </form>
     </main>
   )
+}
+
+export async function getServerSideProps(context){
+  const session = await getSession(context)
+  if(session){ 
+    return { 
+      redirect: { destination: '/', permanent: false } }
+    }
 }

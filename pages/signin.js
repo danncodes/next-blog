@@ -1,26 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useSession, signIn } from "next-auth/react"
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { getSession, signIn } from "next-auth/react"
+
 
 export default function Signin() {
-
-  const router = useRouter()
-  const session = useSession()
-
-  console.log(session)
-
-  useEffect( () => {
-    if(session.status !== "loading"){
-      session.status === "authenticated" ?  router.push({ pathname: '/'}) : console.log("UnAuthenticated")
-    }
-  })
-
-
-
-
-  // UseSession If User is Signed In Auto Redirect To Home/Dashboard Page
 
   return (
     <main className='w-full h-screen flex'>
@@ -93,4 +76,12 @@ export default function Signin() {
       </form>
     </main>
   )
+}
+
+export async function getServerSideProps(context){
+  const session = await getSession(context)
+  if(session){ 
+    return { 
+      redirect: { destination: '/', permanent: false } }
+    }
 }
