@@ -1,5 +1,8 @@
 import Head from 'next/head'
+import Link from 'next/link'
+
 import { getSession, signIn } from "next-auth/react"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons'
 
@@ -82,6 +85,11 @@ export default function Signin() {
             <p type='button' className=''>Sign In with Google</p>
           </button>
 
+        </div>
+
+         {/* Link to Signup */}
+         <div className='w-full flex justify-center mt-8'>
+          <p className='text-sm text-gray-400'>Dont have an account yet? <Link href='/signup'><a className='text-blue-500 font-semibold cursor-pointer hover:text-blue-600 duration-100'>Sign Up</a></Link></p>
         </div>
       </form>
     </main>
