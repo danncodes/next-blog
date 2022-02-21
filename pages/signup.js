@@ -14,22 +14,23 @@ export default function Signup() {
     const [password, setPassword] = useState("")
 
     const [error, setError] = useState(false)
+    const [success, setSuccess] = useState(false)
 
     const handleSubmit = async(e) => {
         e.preventDefault()
+        
         const data = {name, email, password}
-
+        
         try {
-            const req = await fetch("http://localhost:3000/api/users", {
+            const response = await fetch("http://localhost:3000/api/users", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'}, 
                 body: JSON.stringify(data)
             })
-            if(!req.ok) throw new Error("Error Posting Data")
-            
+            const message = await response.json()
+            !response.ok ? (setError(message),setSuccess(false)) : (setSuccess(message),setError(false))            
         } catch (err) {
             console.log(err)
-            setError(true)
         }
     }
 
@@ -89,6 +90,8 @@ export default function Signup() {
 
         {/* Signup and Oauth Button */}
         <div className='flex flex-col items-center w-full my-8 text-sm'>
+          {error && <p className='text-red-600 mb-2'>{error.message}</p>}
+          {success && <p className='text-green-600 mb-2'>{success.message}</p>}
           <button type='submit' className='p-3 w-96 bg-blue-500 hover:bg-blue-600 duration-200 mx-auto text-white rounded my-1'>Sign Up</button>
             
             <div className='w-96 flex items-center my-2'>
