@@ -35,5 +35,8 @@ export default NextAuth({
       from: process.env.EMAIL_FROM
     }),
   ],
+  pages: {
+    signIn: '/signin',
+  },
   adapter: MongoDBAdapter(clientPromise),
 })

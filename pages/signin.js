@@ -7,7 +7,7 @@ import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-ico
 import { useState } from 'react'
 
 
-export default function Signin() {
+export default function Signin(context) {
 
   const [emailInput, setEmailInput] = useState("")
   
@@ -28,6 +28,11 @@ export default function Signin() {
       <form action="" className='w-full lg:w-1/2 h-full bg-white rounded rounded-l-none flex flex-col justify-center' onSubmit={ handleForm }>
 
         {/* Logo */}
+
+        {/* Error Message */}
+        {context.error && <div className='p-4 shadow bg-red-500 text-center mx-auto rounded mb-8 absolute top-0 rounded-t-none'>
+          <p>The email you used is already associated with another provider. Please sign in using the original provider you used...</p>
+        </div>}
 
         {/* Header */}
         <header className='w-96 mx-auto px-4 mb-8'>
@@ -83,7 +88,8 @@ export async function getServerSideProps(context){
   try {
     const session = await getSession(context)
     if(session) return { redirect: { destination: '/', permanent: false } }
-    return { props: {} }
+    if(context.query.error) return { props: {error: context.query.error} }
+    return { props: { } }
     
   } catch (error) {
     console.log(error)
