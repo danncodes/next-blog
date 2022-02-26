@@ -37,6 +37,7 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/signin',
+    // verifyRequest: '/verify-request',
   },
   adapter: MongoDBAdapter(clientPromise),
 })
