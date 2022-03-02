@@ -11,9 +11,7 @@ const NewPost = () => {
     const [body, setBody] = useState("")
     const [imageURL, setImageURL] = useState("")
     const [tags, setTags] = useState([])
-
-    console.log({title, body, imageURL, tags})
-
+    
     const handleForm = async(e) => {
         e.preventDefault()
 
@@ -34,6 +32,17 @@ const NewPost = () => {
     await req
     
     if(req.ok) router.push("/")
+  }
+
+  const handleTagInput = (e) => {
+
+    if(e.nativeEvent.data === ","){
+        const newArray = new Array(...tags)
+        newArray.push(e.target.value.slice(0, -1))
+        setTags(newArray)
+        e.target.value = ''
+    }
+      console.log(tags)
   }
 
     return (
@@ -60,6 +69,13 @@ const NewPost = () => {
             {/* Blog Input */}
             <div className='flex flex-col items-center w-full'>
 
+                {/* Tags */}
+                <ul className="flex mb-1 flex-wrap">
+                    {tags.map( (tag) => (
+                        <li className="rounded shadow bg-blue-500 font-medium text-white hover:bg-blue-600 py-1 px-2 text-xs cursor-pointer mr-2 my-1 duration-150" key={tag}>{tag}</li>
+                    ))}
+                </ul>
+
                 {/* Title */}
                 <div className='w-96 flex shadow-sm my-1'>
                     <input type="text" className=' w-full p-3 rounded rounded-r-none border-r-0 bg-gray-50 outline-none border-2 duration-100 text-sm text-gray-400' placeholder='Post Title' value={title} required onChange={ (e) => {setTitle(e.target.value)}}/>
@@ -73,7 +89,7 @@ const NewPost = () => {
 
                 {/* Tags */}
                 <div className='w-96 flex shadow-sm my-1'>
-                    <input type="text" className=' w-full p-3 rounded rounded-r-none border-r-0 bg-gray-50 outline-none border-2 duration-100 text-sm text-gray-400' placeholder='Tags' />
+                    <input type="text" className=' w-full p-3 rounded rounded-r-none border-r-0 bg-gray-50 outline-none border-2 duration-100 text-sm text-gray-400' placeholder='Tags' onChange={ handleTagInput }/>
 
                     <aside className='h-full w-12 flex items-center rounded rounded-l-none border-2 border-l-0 bg-gray-50'>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 stroke-gray-400" fill="none" viewBox="0 0 24 24">
