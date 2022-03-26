@@ -1,5 +1,6 @@
 import { getSession, signOut } from "next-auth/react"
 import { useEffect, useState } from "react"
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Header from "../components/Header"
 import Modal from "../components/Modal"
@@ -7,6 +8,9 @@ import Tag from "../components/Tag"
 import Post from "../components/Post"
 
 export default function Home(session) {
+
+  const router = useRouter()
+
   console.log(session)
 
   useEffect( () => {
@@ -25,7 +29,39 @@ export default function Home(session) {
     }
   }
 
+  const deletePost = (id) => {
+    setDisplayModal(id)
+    console.log("Delete Post", id)
+  }
+
+  const confirmDeletePost = async() => {
+    console.log("Confirm Delete", displayModal)
+
+    try {
+      const req = await fetch(`http://localhost:3000/api/blogs/${displayModal}`, {
+          method: "DELETE",
+      })
+      await req
+
+      if(req.ok){
+        router.reload()
+      }
+      console.log(req)
+  } 
+    catch (error) {
+        console.log(error)
+    }
+    finally{
+      setDisplayModal(false)
+    }
+  }
+
+  const cancelDeletePost = () => {
+    setDisplayModal(false)
+  }
+
   const [blogs, setBlogs] = useState(undefined)
+  const [displayModal, setDisplayModal] = useState(false)
 
 
     return (
@@ -57,7 +93,7 @@ export default function Home(session) {
         {/*  */}
           <section className="flex flex-col items-center w-full">
             {blogs && blogs.map( (blog) => (
-              <Post blog={blog} key={blog._id} />
+              <Post blog={blog} key={blog._id} deletePost={deletePost} />
             ))}
           </section>
        </main>
@@ -72,7 +108,7 @@ export default function Home(session) {
       </Link>
 
       {/* DeletePost Modal */}
-      {/* <Modal /> */}
+      {displayModal && <Modal confirmDeletePost={ confirmDeletePost } cancelDeletePost={ cancelDeletePost } />}
       </>
     )
 }

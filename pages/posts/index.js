@@ -42,7 +42,6 @@ const NewPost = () => {
         setTags(newArray)
         e.target.value = ''
     }
-      console.log(tags)
   }
 
     return (
@@ -72,7 +71,7 @@ const NewPost = () => {
                 {/* Tags */}
                 <ul className="flex mb-1 flex-wrap">
                     {tags.map( (tag) => (
-                        <li className="rounded shadow bg-blue-500 font-medium text-white hover:bg-blue-600 py-1 px-2 text-xs cursor-pointer mr-2 my-1 duration-150" key={tag}>{tag}</li>
+                        <li className="rounded shadow capitalize bg-blue-500 font-medium text-white hover:bg-blue-600 py-1 px-2 text-xs cursor-pointer mr-2 my-1 duration-150" key={tag}>{tag}</li>
                     ))}
                 </ul>
 

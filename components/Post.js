@@ -1,19 +1,4 @@
-const Post = ({blog}) => {
-    console.log("Post", blog)
-
-    const deleteBlog = async(id) => {
-        console.log("Delete Blog", id)
-        try {
-            const req = await fetch(`http://localhost:3000/api/blogs/${id}`, {
-                method: "DELETE",
-            })
-            const data = await req.json()
-            console.log(data)
-        } 
-        catch (error) {
-            console.log(error)
-        }
-    }
+const Post = ({blog, deletePost}) => {
 
     const editBlog = async(id) => {
         console.log("Edit Blog", id)
@@ -38,6 +23,7 @@ const Post = ({blog}) => {
             console.log(error)
         }
     }
+
     return ( 
         <section id={blog._id} className="border hover:border-2 hover:shadow hover:border-blue-100 duration-150 my-4 p-2 min-h-[9rem] rounded flex gap-y-4 relative w-full">
 
@@ -75,7 +61,7 @@ const Post = ({blog}) => {
                     </div>
 
                     <div className="hover:text-blue-600 duration-150 cursor-pointer p-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" onClick={ () => { deletePost(blog._id)} }>
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </div>
@@ -83,7 +69,7 @@ const Post = ({blog}) => {
                 </div>
             </div>
             
-            {/* Post Image */}
+            {/* No Image */}
             <div className="w-4/12 rounded overflow-clip ml-4 flex items-center">
                 {blog.image && <img src={blog.image} alt="" className="object-cover h-full"/>}
                 {!blog.image && 
